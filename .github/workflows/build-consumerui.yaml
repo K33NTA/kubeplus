@@ -1,0 +1,23 @@
+name: Build and Push Consumer UI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: get QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: get Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: get latest version
+        id: file_reader
+        run: |
+          LAST_LINE=$(tail -n 1 consumerui/versions.txt)
+          echo "latest_version=$LAST_LINE" >> $GITHUB_ENV
