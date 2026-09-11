@@ -22,9 +22,20 @@ jobs:
           LAST_LINE=$(tail -n 1 consumerui/versions.txt)
           echo "latest_version=$LAST_LINE" >> $GITHUB_ENV
 
-      - name: Log in to GAR
-        uses: docker/login-action@v4
+#      - name: Log in to GAR
+#        uses: docker/login-action@v4
+#        with:
+#          registry: us-central1.docker.pkg.dev
+#          username: _json_key
+#          password: ${{secrets.GCP_SA_KEY}}
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          registry: us-central1.docker.pkg.dev
-          username: _json_key
-          password: ${{secrets.GCP_SA_KEY}}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
