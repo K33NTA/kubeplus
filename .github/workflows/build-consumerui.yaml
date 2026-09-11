@@ -31,3 +31,9 @@ jobs:
 
       - name: Push Docker Image
         uses: docker/build-push-action@v6
+        with:
+          context: ./consumerui
+          file: ./Dockerfile
+          push: true
+          tags: us-central1-docker.pkg.dev/titanium-gadget-502516-g3/my-repo/consumerui:latest_version
+          
